@@ -1,0 +1,19 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { RegisterForm } from "../components/auth/RegisterForm";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+---
+
+<Layout title="Utwórz konto | 10x Cards">
+  <main class="min-h-[calc(100vh-3.5rem)] flex items-center justify-center bg-background px-4 py-12">
+    <Card className="w-full max-w-md">
+      <CardHeader className="space-y-1">
+        <CardTitle className="text-2xl font-bold tracking-tight text-center"> Utwórz konto </CardTitle>
+        <CardDescription className="text-center"> Zarejestruj się, aby rozpocząć tworzenie fiszek </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <RegisterForm client:load />
+      </CardContent>
+    </Card>
+  </main>
+</Layout>

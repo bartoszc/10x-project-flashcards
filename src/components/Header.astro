@@ -1,0 +1,57 @@
+---
+import { Button } from "@/components/ui/button";
+
+interface Props {
+  isLoggedIn?: boolean;
+}
+
+const { isLoggedIn = false } = Astro.props;
+---
+
+<header
+  class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+>
+  <div class="container flex h-14 items-center justify-between px-4 mx-auto max-w-5xl">
+    <!-- Logo / Brand -->
+    <a href="/" class="flex items-center space-x-2 transition-opacity hover:opacity-90">
+      <span class="text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+        10x Cards
+      </span>
+    </a>
+
+    <nav class="flex items-center gap-4">
+      {
+        isLoggedIn ? (
+          <>
+            <a
+              href="/generate"
+              class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hidden sm:block"
+            >
+              Generuj fiszki
+            </a>
+            <a
+              href="/flashcards"
+              class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hidden sm:block"
+            >
+              Moje fiszki
+            </a>
+            <form action="/api/auth/logout" method="POST" class="inline">
+              <Button variant="ghost" size="sm" type="submit" className="text-muted-foreground hover:text-foreground">
+                Wyloguj
+              </Button>
+            </form>
+          </>
+        ) : (
+          <>
+            <a href="/login" class="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
+              Zaloguj się
+            </a>
+            <Button asChild size="sm">
+              <a href="/register">Zarejestruj się</a>
+            </Button>
+          </>
+        )
+      }
+    </nav>
+  </div>
+</header>
