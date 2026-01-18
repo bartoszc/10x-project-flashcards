@@ -23,17 +23,20 @@ test.describe("Application Smoke Tests", () => {
     await page.goto("/login");
 
     // Verify login form elements are visible
-    await expect(page.getByRole("heading", { name: /zaloguj|login/i })).toBeVisible();
+    // Use data-slot attribute to target card title specifically
+    await expect(page.locator('[data-slot="card-title"]')).toBeVisible();
     await expect(page.getByLabel(/email/i)).toBeVisible();
-    await expect(page.getByLabel(/hasło|password/i)).toBeVisible();
-    await expect(page.getByRole("button", { name: /zaloguj|login/i })).toBeVisible();
+    // Use input name attribute to target password input specifically
+    await expect(page.locator('input[name="password"]')).toBeVisible();
+    await expect(page.getByRole("button", { name: /zaloguj/i })).toBeVisible();
   });
 
   test("should display register form on register page", async ({ page }) => {
     await page.goto("/register");
 
     // Verify register form elements are visible
-    await expect(page.getByRole("heading", { name: /zarejestruj|register/i })).toBeVisible();
+    // Use data-slot attribute to target card title specifically
+    await expect(page.locator('[data-slot="card-title"]')).toBeVisible();
     await expect(page.getByLabel(/email/i)).toBeVisible();
   });
 });

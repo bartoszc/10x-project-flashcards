@@ -13,6 +13,7 @@ const PUBLIC_PATHS = [
   "/api/auth/login",
   "/api/auth/register",
   "/api/auth/reset-password",
+  "/api/auth/update-password", // Uses Bearer token from URL hash
   "/api/auth/logout",
   "/api/auth/account",
 ];

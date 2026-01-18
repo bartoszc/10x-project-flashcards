@@ -2,7 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 
 import type { Database } from "../../db/database.types";
 import type { FlashcardDTO, PaginationDTO } from "../../types";
-import type { GetFlashcardsQueryParams } from "../schemas/flashcard.schema";
+import type { GetFlashcardsQueryParams, CreateFlashcardInput, UpdateFlashcardInput } from "../schemas/flashcard.schema";
 
 /**
  * Result of getFlashcards operation.
@@ -18,7 +18,7 @@ interface GetFlashcardsResult {
 export class FlashcardServiceError extends Error {
   constructor(
     message: string,
-    public readonly code: "DATABASE_ERROR" | "INTERNAL_ERROR",
+    public readonly code: "DATABASE_ERROR" | "INTERNAL_ERROR" | "NOT_FOUND",
     public readonly httpStatus: number
   ) {
     super(message);
@@ -89,4 +89,132 @@ export async function getFlashcards(
       total_pages: totalPages,
     },
   };
+}
+
+/**
+ * Creates a new flashcard manually for the authenticated user.
+ *
+ * @param supabase - Supabase client from context.locals
+ * @param userId - Authenticated user ID
+ * @param input - Flashcard data (front, back)
+ * @returns Created FlashcardDTO
+ * @throws FlashcardServiceError if database insert fails
+ */
+export async function createFlashcard(
+  supabase: SupabaseClient<Database>,
+  userId: string,
+  input: CreateFlashcardInput
+): Promise<FlashcardDTO> {
+  const { data, error } = await supabase
+    .from("flashcards")
+    .insert({
+      user_id: userId,
+      front: input.front,
+      back: input.back,
+      source: "manual",
+      // Spaced repetition defaults
+      next_review_date: new Date().toISOString().split("T")[0],
+      interval: 0,
+      ease_factor: 2.5,
+      repetition_count: 0,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error creating flashcard:", error);
+    throw new FlashcardServiceError(`Database error: ${error.message}`, "DATABASE_ERROR", 500);
+  }
+
+  if (!data) {
+    throw new FlashcardServiceError("Failed to create flashcard", "INTERNAL_ERROR", 500);
+  }
+
+  // Map to DTO (exclude user_id)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { user_id, ...flashcard } = data;
+  return flashcard;
+}
+
+/**
+ * Updates an existing flashcard for the authenticated user.
+ *
+ * @param supabase - Supabase client from context.locals
+ * @param userId - Authenticated user ID
+ * @param flashcardId - ID of the flashcard to update
+ * @param input - Updated flashcard data (front, back)
+ * @returns Updated FlashcardDTO
+ * @throws FlashcardServiceError if flashcard not found or database error
+ */
+export async function updateFlashcard(
+  supabase: SupabaseClient<Database>,
+  userId: string,
+  flashcardId: string,
+  input: UpdateFlashcardInput
+): Promise<FlashcardDTO> {
+  const { data, error } = await supabase
+    .from("flashcards")
+    .update({
+      front: input.front,
+      back: input.back,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", flashcardId)
+    .eq("user_id", userId) // Ensures ownership
+    .select()
+    .single();
+
+  if (error) {
+    // Check if it's a "no rows" error (PGRST116)
+    if (error.code === "PGRST116") {
+      throw new FlashcardServiceError("Flashcard not found", "NOT_FOUND", 404);
+    }
+    console.error("Error updating flashcard:", error);
+    throw new FlashcardServiceError(`Database error: ${error.message}`, "DATABASE_ERROR", 500);
+  }
+
+  if (!data) {
+    throw new FlashcardServiceError("Flashcard not found", "NOT_FOUND", 404);
+  }
+
+  // Map to DTO (exclude user_id)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { user_id, ...flashcard } = data;
+  return flashcard;
+}
+
+/**
+ * Deletes a flashcard for the authenticated user.
+ *
+ * @param supabase - Supabase client from context.locals
+ * @param userId - Authenticated user ID
+ * @param flashcardId - ID of the flashcard to delete
+ * @returns Success message
+ * @throws FlashcardServiceError if flashcard not found or database error
+ */
+export async function deleteFlashcard(
+  supabase: SupabaseClient<Database>,
+  userId: string,
+  flashcardId: string
+): Promise<{ message: string }> {
+  // First check if flashcard exists and belongs to user
+  const { data: existing, error: checkError } = await supabase
+    .from("flashcards")
+    .select("id")
+    .eq("id", flashcardId)
+    .eq("user_id", userId)
+    .single();
+
+  if (checkError || !existing) {
+    throw new FlashcardServiceError("Flashcard not found", "NOT_FOUND", 404);
+  }
+
+  const { error } = await supabase.from("flashcards").delete().eq("id", flashcardId).eq("user_id", userId);
+
+  if (error) {
+    console.error("Error deleting flashcard:", error);
+    throw new FlashcardServiceError(`Database error: ${error.message}`, "DATABASE_ERROR", 500);
+  }
+
+  return { message: "Flashcard deleted successfully" };
 }

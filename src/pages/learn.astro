@@ -1,0 +1,27 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { LearningView } from "@/components/learning/LearningView";
+---
+
+<Layout title="Nauka | 10x Cards">
+  <LearningView client:load />
+</Layout>
+
+<style is:global>
+  /* 3D flip card styles */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+</style>

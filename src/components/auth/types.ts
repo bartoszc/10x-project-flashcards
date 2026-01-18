@@ -4,10 +4,12 @@
 
 /**
  * Stan formularza logowania.
+ * Index signature pozwala na użycie z generycznym hookiem useAuthForm.
  */
 export interface LoginFormData {
   email: string;
   password: string;
+  [key: string]: string;
 }
 
 /**
@@ -16,6 +18,7 @@ export interface LoginFormData {
 export interface LoginFormErrors {
   email?: string;
   password?: string;
+  [key: string]: string | undefined;
 }
 
 /**
@@ -31,11 +34,13 @@ export interface LoginFormState {
 
 /**
  * Stan formularza rejestracji.
+ * Index signature pozwala na użycie z generycznym hookiem useAuthForm.
  */
 export interface RegisterFormData {
   email: string;
   password: string;
   confirmPassword: string;
+  [key: string]: string;
 }
 
 /**
@@ -45,6 +50,7 @@ export interface RegisterFormErrors {
   email?: string;
   password?: string;
   confirmPassword?: string;
+  [key: string]: string | undefined;
 }
 
 /**

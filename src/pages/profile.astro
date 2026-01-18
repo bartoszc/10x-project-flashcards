@@ -1,0 +1,10 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { ProfileView } from "@/components/profile/ProfileView";
+
+const user = Astro.locals.user;
+---
+
+<Layout title="Profil | 10x Cards">
+  <ProfileView client:load userEmail={user?.email ?? ""} />
+</Layout>
