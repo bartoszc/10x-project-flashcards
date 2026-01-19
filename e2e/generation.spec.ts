@@ -20,8 +20,8 @@ import { GeneratePage } from "./pages";
  * Note: TC-GEN-001 (actual AI generation) requires API mocking with MSW.
  */
 
-// Skip all generation tests until valid test user is configured in Supabase
-test.describe.skip("Flashcard Generation", () => {
+// Generation tests require authenticated user configured in .env.test
+test.describe("Flashcard Generation", () => {
   test.describe("Text Validation", () => {
     test("TC-GEN-002: should disable generate button when text is too short", async ({ page }) => {
       const generatePage = new GeneratePage(page);

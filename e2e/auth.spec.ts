@@ -20,8 +20,8 @@ test.describe("Authentication", () => {
       await loginPage.expectFormVisible();
     });
 
-    // Skip this test until valid test user is configured in Supabase
-    test.skip("TC-AUTH-002: should login with valid credentials and redirect to generate page", async ({ page }) => {
+    // Test requires valid test user configured in .env.test
+    test("TC-AUTH-002: should login with valid credentials and redirect to generate page", async ({ page }) => {
       const loginPage = new LoginPage(page);
 
       // Navigate to login page
@@ -92,9 +92,8 @@ test.describe("Authentication", () => {
   });
 
   test.describe("Logout", () => {
-    // Skip these tests - they require valid test account
-    // Once a valid test user is created, remove the .skip and configure credentials
-    authTest.skip("TC-AUTH-004: should logout and redirect to login page", async ({ authenticatedPage }) => {
+    // Tests require valid test account configured in .env.test
+    authTest("TC-AUTH-004: should logout and redirect to login page", async ({ authenticatedPage }) => {
       // Find and click logout button in navigation
       const logoutButton = authenticatedPage.getByRole("button", {
         name: /wyloguj|logout/i,
@@ -116,7 +115,7 @@ test.describe("Authentication", () => {
       await expect(authenticatedPage).toHaveURL(/login/, { timeout: 10000 });
     });
 
-    authTest.skip("TC-AUTH-004b: should not access protected routes after logout", async ({ authenticatedPage }) => {
+    authTest("TC-AUTH-004b: should not access protected routes after logout", async ({ authenticatedPage }) => {
       // Perform logout
       const logoutButton = authenticatedPage.getByRole("button", {
         name: /wyloguj|logout/i,
