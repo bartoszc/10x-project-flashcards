@@ -23,44 +23,36 @@ import { GeneratePage } from "./pages";
 // Skip all generation tests until valid test user is configured in Supabase
 test.describe.skip("Flashcard Generation", () => {
   test.describe("Text Validation", () => {
-    test(
-      "TC-GEN-002: should disable generate button when text is too short",
-      async ({ page }) => {
-        const generatePage = new GeneratePage(page);
+    test("TC-GEN-002: should disable generate button when text is too short", async ({ page }) => {
+      const generatePage = new GeneratePage(page);
 
-        // This test assumes user is already logged in
-        await generatePage.navigate();
-        await generatePage.expectFormVisible();
+      // This test assumes user is already logged in
+      await generatePage.navigate();
+      await generatePage.expectFormVisible();
 
-        // Enter text that is too short (less than 1000 characters)
-        const shortText = "A".repeat(500);
-        await generatePage.enterSourceText(shortText);
+      // Enter text that is too short (less than 1000 characters)
+      const shortText = "A".repeat(500);
+      await generatePage.enterSourceText(shortText);
 
-        // Generate button should be disabled
-        await generatePage.expectGenerateDisabled();
-      }
-    );
+      // Generate button should be disabled
+      await generatePage.expectGenerateDisabled();
+    });
 
-    test(
-      "TC-GEN-003: should disable generate button when text is too long",
-      async ({ page }) => {
-        const generatePage = new GeneratePage(page);
+    test("TC-GEN-003: should disable generate button when text is too long", async ({ page }) => {
+      const generatePage = new GeneratePage(page);
 
-        await generatePage.navigate();
-        await generatePage.expectFormVisible();
+      await generatePage.navigate();
+      await generatePage.expectFormVisible();
 
-        // Enter text that is too long (more than 10000 characters)
-        const longText = "A".repeat(12000);
-        await generatePage.enterSourceText(longText);
+      // Enter text that is too long (more than 10000 characters)
+      const longText = "A".repeat(12000);
+      await generatePage.enterSourceText(longText);
 
-        // Generate button should be disabled
-        await generatePage.expectGenerateDisabled();
-      }
-    );
+      // Generate button should be disabled
+      await generatePage.expectGenerateDisabled();
+    });
 
-    test("should enable generate button when text length is valid", async ({
-      page,
-    }) => {
+    test("should enable generate button when text length is valid", async ({ page }) => {
       const generatePage = new GeneratePage(page);
 
       await generatePage.navigate();

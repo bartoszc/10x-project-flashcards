@@ -45,11 +45,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     const supabase = locals.supabase;
-    
+
     // Ensure user is authenticated
-    const { data: { user } } = await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     if (!user) {
-       const errorResponse: ErrorResponseDTO = {
+      const errorResponse: ErrorResponseDTO = {
         error: {
           code: "UNAUTHORIZED",
           message: "Invalid or expired session. Please try resetting your password again.",
@@ -62,6 +64,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     const result = await AuthService.updatePassword(supabase, validationResult.data.password);
+
+    // Log out the user after password change so they must re-authenticate with new password
+    await supabase.auth.signOut();
 
     return new Response(JSON.stringify(result), {
       status: 200,

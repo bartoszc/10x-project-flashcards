@@ -45,12 +45,7 @@ export const GenerationForm: React.FC<GenerationFormProps> = ({
         />
       </div>
 
-      <Button
-        type="submit"
-        disabled={isButtonDisabled}
-        className="w-full sm:w-auto"
-        size="lg"
-      >
+      <Button type="submit" disabled={isButtonDisabled} className="w-full sm:w-auto" size="lg">
         {isLoading ? (
           <>
             <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />

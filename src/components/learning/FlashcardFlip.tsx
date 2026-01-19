@@ -11,12 +11,7 @@ interface FlashcardFlipProps {
  * 3D flip card component for learning sessions.
  * Click or press Space to flip.
  */
-export const FlashcardFlip: React.FC<FlashcardFlipProps> = ({
-  front,
-  back,
-  isFlipped,
-  onFlip,
-}) => {
+export const FlashcardFlip: React.FC<FlashcardFlipProps> = ({ front, back, isFlipped, onFlip }) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.code === "Space") {
       e.preventDefault();
@@ -31,7 +26,11 @@ export const FlashcardFlip: React.FC<FlashcardFlipProps> = ({
       onKeyDown={handleKeyDown}
       tabIndex={0}
       role="button"
-      aria-label={isFlipped ? "Flashcard showing answer, click to show question" : "Flashcard showing question, click to show answer"}
+      aria-label={
+        isFlipped
+          ? "Flashcard showing answer, click to show question"
+          : "Flashcard showing question, click to show answer"
+      }
     >
       <div
         className={`relative w-full h-full transition-transform duration-500 transform-style-3d ${

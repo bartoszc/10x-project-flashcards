@@ -1,0 +1,42 @@
+---
+import { createSupabaseServerInstance } from "../../db/supabase.client";
+
+export const prerender = false;
+
+// This page handles Supabase auth callbacks (password reset, email verification, etc.)
+// It processes the 'code' query parameter and exchanges it for a session
+
+const { cookies, redirect, request, url } = Astro;
+
+const code = url.searchParams.get("code");
+const error = url.searchParams.get("error");
+const errorDescription = url.searchParams.get("error_description");
+
+// Handle error from Supabase
+if (error) {
+  const errorMessage = encodeURIComponent(errorDescription || "Wystąpił błąd podczas autoryzacji");
+  return redirect(`/auth/new-password?error=${errorMessage}`);
+}
+
+// If no code, redirect to login
+if (!code) {
+  return redirect("/login");
+}
+
+// Exchange code for session using server-side Supabase client
+const supabase = createSupabaseServerInstance({
+  cookies,
+  headers: request.headers,
+});
+
+const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
+
+if (exchangeError) {
+  console.error("Error exchanging code:", exchangeError);
+  const errorMessage = encodeURIComponent("Link wygasł lub jest nieprawidłowy. Spróbuj ponownie.");
+  return redirect(`/auth/new-password?error=${errorMessage}`);
+}
+
+// Success! Redirect to new-password page (user is now authenticated)
+return redirect("/auth/new-password?success=true");
+---

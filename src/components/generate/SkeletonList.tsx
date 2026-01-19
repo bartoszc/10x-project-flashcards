@@ -11,7 +11,7 @@ interface SkeletonListProps {
  */
 export const SkeletonList: React.FC<SkeletonListProps> = ({ count = 4 }) => {
   return (
-    <ul className="space-y-4" aria-label="Ładowanie propozycji fiszek" role="list">
+    <ul className="space-y-4" aria-label="Ładowanie propozycji fiszek">
       {Array.from({ length: count }, (_, index) => (
         <li key={index}>
           <SuggestionCardSkeleton />

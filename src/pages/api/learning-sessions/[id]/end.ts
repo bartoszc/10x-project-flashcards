@@ -53,11 +53,7 @@ export const PATCH: APIRoute = async ({ locals, params }) => {
 
   // 3. End session via service
   try {
-    const result: EndSessionResponseDTO = await endSession(
-      locals.supabase,
-      user.id,
-      idParseResult.data
-    );
+    const result: EndSessionResponseDTO = await endSession(locals.supabase, user.id, idParseResult.data);
 
     return new Response(JSON.stringify(result), {
       status: 200,

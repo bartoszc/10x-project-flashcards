@@ -52,19 +52,11 @@ export async function startSession(
 
   if (flashcardsError) {
     console.error("Error fetching flashcards for session:", flashcardsError);
-    throw new LearningServiceError(
-      `Database error: ${flashcardsError.message}`,
-      "DATABASE_ERROR",
-      500
-    );
+    throw new LearningServiceError(`Database error: ${flashcardsError.message}`, "DATABASE_ERROR", 500);
   }
 
   if (!flashcards || flashcards.length === 0) {
-    throw new LearningServiceError(
-      "No flashcards due for review",
-      "NO_FLASHCARDS",
-      404
-    );
+    throw new LearningServiceError("No flashcards due for review", "NO_FLASHCARDS", 404);
   }
 
   // Create learning session
@@ -79,11 +71,7 @@ export async function startSession(
 
   if (sessionError || !session) {
     console.error("Error creating learning session:", sessionError);
-    throw new LearningServiceError(
-      "Failed to create learning session",
-      "DATABASE_ERROR",
-      500
-    );
+    throw new LearningServiceError("Failed to create learning session", "DATABASE_ERROR", 500);
   }
 
   // Store flashcard queue in memory
@@ -239,11 +227,7 @@ export async function submitReview(
 
   if (updateError) {
     console.error("Error updating flashcard:", updateError);
-    throw new LearningServiceError(
-      "Failed to update flashcard",
-      "DATABASE_ERROR",
-      500
-    );
+    throw new LearningServiceError("Failed to update flashcard", "DATABASE_ERROR", 500);
   }
 
   // Record review in flashcard_reviews
@@ -267,10 +251,7 @@ export async function submitReview(
   sessionReviewedCounts.set(sessionId, reviewedCount);
 
   // Update session reviewed count
-  await supabase
-    .from("learning_sessions")
-    .update({ flashcards_reviewed: reviewedCount })
-    .eq("id", sessionId);
+  await supabase.from("learning_sessions").update({ flashcards_reviewed: reviewedCount }).eq("id", sessionId);
 
   return {
     flashcard_id: flashcard_id,
@@ -311,11 +292,7 @@ export async function endSession(
 
   if (updateError) {
     console.error("Error ending session:", updateError);
-    throw new LearningServiceError(
-      "Failed to end session",
-      "DATABASE_ERROR",
-      500
-    );
+    throw new LearningServiceError("Failed to end session", "DATABASE_ERROR", 500);
   }
 
   // Calculate duration

@@ -42,11 +42,12 @@ export const POST: APIRoute = async ({ locals }) => {
     }
 
     // Logout user via AuthService
-    const result = await AuthService.logout(supabase);
+    await AuthService.logout(supabase);
 
-    return new Response(JSON.stringify(result), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
+    // Redirect to homepage after successful logout
+    return new Response(null, {
+      status: 302,
+      headers: { Location: "/" },
     });
   } catch (error) {
     // Handle AuthError with specific status codes

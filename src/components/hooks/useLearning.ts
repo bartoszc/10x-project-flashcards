@@ -2,7 +2,6 @@ import { useState, useCallback } from "react";
 import type {
   CreateLearningSessionResponseDTO,
   NextFlashcardResponseDTO,
-  SubmitReviewResponseDTO,
   EndSessionResponseDTO,
   LearningFlashcardDTO,
 } from "@/types";
@@ -146,12 +145,16 @@ export function useLearning() {
           throw new Error("Failed to submit review");
         }
 
-        const _data: SubmitReviewResponseDTO = await response.json();
+        // Response contains success status, but we don't need to process it
+        await response.json();
 
         setState((prev) => ({ ...prev, isSubmitting: false }));
 
-        // Fetch next flashcard
-        await fetchNextFlashcard(state.sessionId!);
+        // Fetch next flashcard - sessionId is checked at the start of the function
+        const currentSessionId = state.sessionId;
+        if (currentSessionId) {
+          await fetchNextFlashcard(currentSessionId);
+        }
         return true;
       } catch (error) {
         const message = error instanceof Error ? error.message : "An error occurred";

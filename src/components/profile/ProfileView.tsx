@@ -85,23 +85,10 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ userEmail }) => {
             <div className="space-y-6">
               {/* Main stats grid */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <StatCard 
-                  title="Sesje generowania" 
-                  value={stats.total_sessions} 
-                />
-                <StatCard 
-                  title="Wygenerowane" 
-                  value={stats.total_generated} 
-                />
-                <StatCard 
-                  title="Zaakceptowane" 
-                  value={stats.total_accepted}
-                  subtitle={`${stats.acceptance_rate}%`}
-                />
-                <StatCard 
-                  title="Odrzucone" 
-                  value={stats.total_rejected} 
-                />
+                <StatCard title="Sesje generowania" value={stats.total_sessions} />
+                <StatCard title="Wygenerowane" value={stats.total_generated} />
+                <StatCard title="Zaakceptowane" value={stats.total_accepted} subtitle={`${stats.acceptance_rate}%`} />
+                <StatCard title="Odrzucone" value={stats.total_rejected} />
               </div>
 
               {/* Source breakdown */}
@@ -112,14 +99,12 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ userEmail }) => {
                     <span className="text-2xl font-bold">{stats.flashcards_by_source.ai}</span>
                   </div>
                   <div className="mt-2 h-2 bg-muted rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className="h-full bg-primary rounded-full transition-all"
                       style={{ width: `${stats.ai_usage_percentage}%` }}
                     />
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {stats.ai_usage_percentage}% wszystkich fiszek
-                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">{stats.ai_usage_percentage}% wszystkich fiszek</p>
                 </div>
                 <div className="p-4 bg-secondary/10 rounded-lg">
                   <div className="flex items-center justify-between">
@@ -127,7 +112,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ userEmail }) => {
                     <span className="text-2xl font-bold">{stats.flashcards_by_source.manual}</span>
                   </div>
                   <div className="mt-2 h-2 bg-muted rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className="h-full bg-secondary rounded-full transition-all"
                       style={{ width: `${100 - stats.ai_usage_percentage}%` }}
                     />
@@ -153,7 +138,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ userEmail }) => {
           <p className="text-sm text-muted-foreground">
             Usunięcie konta jest nieodwracalne. Wszystkie Twoje dane zostaną trwale usunięte.
           </p>
-          
+
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive">Usuń konto</Button>
@@ -162,13 +147,13 @@ export const ProfileView: React.FC<ProfileViewProps> = ({ userEmail }) => {
               <AlertDialogHeader>
                 <AlertDialogTitle>Czy na pewno chcesz usunąć konto?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Ta operacja jest nieodwracalna. Wszystkie Twoje fiszki, sesje nauki i dane zostaną 
-                  trwale usunięte. Nie będzie możliwości odzyskania danych.
+                  Ta operacja jest nieodwracalna. Wszystkie Twoje fiszki, sesje nauki i dane zostaną trwale usunięte.
+                  Nie będzie możliwości odzyskania danych.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Anuluj</AlertDialogCancel>
-                <AlertDialogAction 
+                <AlertDialogAction
                   onClick={handleDeleteAccount}
                   disabled={isDeleting}
                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"

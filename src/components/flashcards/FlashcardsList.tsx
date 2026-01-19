@@ -58,23 +58,13 @@ const Pagination: React.FC<{
 
   return (
     <div className="flex items-center justify-center gap-2 mt-6">
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => onPageChange(page - 1)}
-        disabled={page <= 1}
-      >
+      <Button variant="outline" size="sm" onClick={() => onPageChange(page - 1)} disabled={page <= 1}>
         ← Poprzednia
       </Button>
       <span className="text-sm text-muted-foreground px-4">
         Strona {page} z {total_pages}
       </span>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => onPageChange(page + 1)}
-        disabled={page >= total_pages}
-      >
+      <Button variant="outline" size="sm" onClick={() => onPageChange(page + 1)} disabled={page >= total_pages}>
         Następna →
       </Button>
     </div>

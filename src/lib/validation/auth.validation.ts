@@ -16,7 +16,7 @@ import type { LoginFormData, LoginFormErrors, RegisterFormData, RegisterFormErro
  */
 export function validateEmail(email: string): string | undefined {
   const trimmed = email.trim();
-  
+
   if (!trimmed) {
     return "Email jest wymagany";
   }

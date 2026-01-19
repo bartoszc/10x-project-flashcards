@@ -89,14 +89,8 @@ function getStrengthLabel(strength: PasswordStrength): string {
  * Visual password strength indicator with progress bar and requirements list.
  * Shows real-time feedback on password requirements fulfillment.
  */
-function PasswordStrengthIndicator({
-  password,
-  className,
-}: PasswordStrengthIndicatorProps) {
-  const { strength, requirements } = React.useMemo(
-    () => evaluatePassword(password),
-    [password]
-  );
+function PasswordStrengthIndicator({ password, className }: PasswordStrengthIndicatorProps) {
+  const { strength, requirements } = React.useMemo(() => evaluatePassword(password), [password]);
 
   // Don't render if password is empty
   if (!password) {
@@ -128,9 +122,7 @@ function PasswordStrengthIndicator({
               getStrengthWidth(strength)
             )}
             role="progressbar"
-            aria-valuenow={
-              strength === "weak" ? 33 : strength === "medium" ? 66 : 100
-            }
+            aria-valuenow={strength === "weak" ? 33 : strength === "medium" ? 66 : 100}
             aria-valuemin={0}
             aria-valuemax={100}
             aria-label={`Siła hasła: ${getStrengthLabel(strength)}`}
@@ -143,16 +135,9 @@ function PasswordStrengthIndicator({
         {requirements.map((req, index) => (
           <li
             key={index}
-            className={cn(
-              "flex items-center gap-2 text-xs",
-              req.met ? "text-green-600" : "text-muted-foreground"
-            )}
+            className={cn("flex items-center gap-2 text-xs", req.met ? "text-green-600" : "text-muted-foreground")}
           >
-            {req.met ? (
-              <Check className="size-3" aria-hidden="true" />
-            ) : (
-              <X className="size-3" aria-hidden="true" />
-            )}
+            {req.met ? <Check className="size-3" aria-hidden="true" /> : <X className="size-3" aria-hidden="true" />}
             <span>{req.label}</span>
           </li>
         ))}

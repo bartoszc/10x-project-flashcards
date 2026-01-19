@@ -13,24 +13,25 @@ const TEST_USER = {
 /**
  * Extended test fixtures with authentication support.
  */
-type AuthFixtures = {
+interface AuthFixtures {
   /** Authenticated page with logged-in user */
   authenticatedPage: Page;
   /** Test user credentials */
   testUser: typeof TEST_USER;
-};
+}
 
 /**
  * Custom test instance with authentication fixtures.
  * Uses browser context to preserve auth state between tests.
  */
+
 export const test = base.extend<AuthFixtures>({
+  // eslint-disable-next-line no-empty-pattern
   testUser: async ({}, use) => {
     if (!TEST_USER.email || !TEST_USER.password) {
-      throw new Error(
-        "E2E_USERNAME and E2E_PASSWORD must be set in .env.test file"
-      );
+      throw new Error("E2E_USERNAME and E2E_PASSWORD must be set in .env.test file");
     }
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     await use(TEST_USER);
   },
 
@@ -48,6 +49,7 @@ export const test = base.extend<AuthFixtures>({
     await expect(page).toHaveURL(/generate/, { timeout: 10000 });
 
     // Provide authenticated page to tests
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     await use(page);
 
     // Cleanup: close context after test

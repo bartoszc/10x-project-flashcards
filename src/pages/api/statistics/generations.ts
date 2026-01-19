@@ -36,10 +36,7 @@ export const GET: APIRoute = async ({ locals }) => {
 
   // 2. Get statistics via service
   try {
-    const statistics: GenerationStatisticsDTO = await getGenerationStatistics(
-      locals.supabase,
-      user.id
-    );
+    const statistics: GenerationStatisticsDTO = await getGenerationStatistics(locals.supabase, user.id);
 
     return new Response(JSON.stringify(statistics), {
       status: 200,

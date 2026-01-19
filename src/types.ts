@@ -11,7 +11,6 @@ import type { Database } from "./db/database.types";
 type FlashcardRow = Database["public"]["Tables"]["flashcards"]["Row"];
 type GenerationSessionRow = Database["public"]["Tables"]["generation_sessions"]["Row"];
 type LearningSessionRow = Database["public"]["Tables"]["learning_sessions"]["Row"];
-type FlashcardReviewRow = Database["public"]["Tables"]["flashcard_reviews"]["Row"];
 type ProfileRow = Database["public"]["Tables"]["profiles"]["Row"];
 
 /**

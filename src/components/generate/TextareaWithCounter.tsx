@@ -37,18 +37,12 @@ export const TextareaWithCounter: React.FC<TextareaWithCounterProps> = ({
         onChange={handleChange}
         placeholder={placeholder}
         disabled={disabled}
-        className={`min-h-[200px] resize-y ${
-          isInvalid ? "border-destructive focus-visible:ring-destructive" : ""
-        }`}
+        className={`min-h-[200px] resize-y ${isInvalid ? "border-destructive focus-visible:ring-destructive" : ""}`}
         aria-describedby="character-counter"
         aria-invalid={isInvalid}
       />
       <div id="character-counter">
-        <CharacterCounter
-          currentCount={value.length}
-          minLength={minLength}
-          maxLength={maxLength}
-        />
+        <CharacterCounter currentCount={value.length} minLength={minLength} maxLength={maxLength} />
       </div>
     </div>
   );

@@ -12,14 +12,7 @@ import { Toaster } from "@/components/ui/sonner";
  * Orchestrates state management and renders all child components.
  */
 export const FlashcardsView: React.FC = () => {
-  const {
-    state,
-    createFlashcard,
-    updateFlashcard,
-    deleteFlashcard,
-    setFilters,
-    goToPage,
-  } = useFlashcards();
+  const { state, createFlashcard, updateFlashcard, deleteFlashcard, setFilters, goToPage } = useFlashcards();
 
   // State for delete confirmation dialog
   const [deleteTarget, setDeleteTarget] = React.useState<string | null>(null);
@@ -45,9 +38,7 @@ export const FlashcardsView: React.FC = () => {
           <div>
             <h1 className="text-3xl font-bold">Moje fiszki</h1>
             <p className="text-muted-foreground mt-1">
-              {state.pagination
-                ? `${state.pagination.total} fiszek`
-                : "Zarządzaj swoimi fiszkami"}
+              {state.pagination ? `${state.pagination.total} fiszek` : "Zarządzaj swoimi fiszkami"}
             </p>
           </div>
           <FlashcardForm

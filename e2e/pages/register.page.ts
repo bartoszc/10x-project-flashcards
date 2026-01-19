@@ -87,11 +87,7 @@ export class RegisterPage extends BasePage {
    */
   async expectValidationError(field: "email" | "password" | "confirmPassword"): Promise<void> {
     const input =
-      field === "email"
-        ? this.emailInput
-        : field === "password"
-          ? this.passwordInput
-          : this.confirmPasswordInput;
+      field === "email" ? this.emailInput : field === "password" ? this.passwordInput : this.confirmPasswordInput;
     await expect(input).toHaveAttribute("aria-invalid", "true");
   }
 

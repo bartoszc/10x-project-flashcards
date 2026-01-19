@@ -31,16 +31,9 @@ export const RatingButtons: React.FC<RatingButtonsProps> = ({ onRate, isDisabled
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-center text-sm text-muted-foreground">
-        Oceń swoją odpowiedź (klawisze 1-4)
-      </p>
+      <p className="text-center text-sm text-muted-foreground">Oceń swoją odpowiedź (klawisze 1-4)</p>
       <div className="flex gap-2 justify-center flex-wrap">
-        <Button
-          variant="destructive"
-          onClick={() => onRate(1)}
-          disabled={isDisabled}
-          className="min-w-[80px]"
-        >
+        <Button variant="destructive" onClick={() => onRate(1)} disabled={isDisabled} className="min-w-[80px]">
           <span className="mr-1">1</span> Powtórz
         </Button>
         <Button

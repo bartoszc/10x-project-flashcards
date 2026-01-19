@@ -47,13 +47,9 @@ export async function getGenerationStatistics(
   };
 
   // Calculate rates
-  const acceptanceRate = totalGenerated > 0 
-    ? Math.round((totalAccepted / totalGenerated) * 1000) / 10 
-    : 0;
-  
-  const aiUsagePercentage = totalFlashcards > 0 
-    ? Math.round((aiCount / totalFlashcards) * 1000) / 10 
-    : 0;
+  const acceptanceRate = totalGenerated > 0 ? Math.round((totalAccepted / totalGenerated) * 1000) / 10 : 0;
+
+  const aiUsagePercentage = totalFlashcards > 0 ? Math.round((aiCount / totalFlashcards) * 1000) / 10 : 0;
 
   return {
     total_sessions: totalSessions,

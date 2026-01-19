@@ -17,11 +17,7 @@ interface PasswordInputProps extends React.ComponentProps<"input"> {
  * Password input field with visibility toggle button.
  * Provides Eye/EyeOff icon to show/hide password content.
  */
-function PasswordInput({
-  className,
-  onVisibilityChange,
-  ...props
-}: PasswordInputProps) {
+function PasswordInput({ className, onVisibilityChange, ...props }: PasswordInputProps) {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const toggleVisibility = React.useCallback(() => {
@@ -34,11 +30,7 @@ function PasswordInput({
 
   return (
     <div className="relative">
-      <Input
-        type={showPassword ? "text" : "password"}
-        className={cn("pr-10", className)}
-        {...props}
-      />
+      <Input type={showPassword ? "text" : "password"} className={cn("pr-10", className)} {...props} />
       <Button
         type="button"
         variant="ghost"

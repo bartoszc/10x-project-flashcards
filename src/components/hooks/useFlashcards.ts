@@ -52,43 +52,46 @@ export function useFlashcards() {
   /**
    * Fetches flashcards from API with current filters.
    */
-  const fetchFlashcards = useCallback(async (filters?: Partial<FlashcardsFilters>) => {
-    setState((prev) => ({ ...prev, isLoading: true, error: null }));
+  const fetchFlashcards = useCallback(
+    async (filters?: Partial<FlashcardsFilters>) => {
+      setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
-    const currentFilters = { ...state.filters, ...filters };
+      const currentFilters = { ...state.filters, ...filters };
 
-    try {
-      const params = new URLSearchParams();
-      params.set("page", currentFilters.page.toString());
-      params.set("limit", currentFilters.limit.toString());
-      params.set("sort", currentFilters.sort);
-      params.set("order", currentFilters.order);
-      if (currentFilters.source) {
-        params.set("source", currentFilters.source);
+      try {
+        const params = new URLSearchParams();
+        params.set("page", currentFilters.page.toString());
+        params.set("limit", currentFilters.limit.toString());
+        params.set("sort", currentFilters.sort);
+        params.set("order", currentFilters.order);
+        if (currentFilters.source) {
+          params.set("source", currentFilters.source);
+        }
+
+        const response = await fetch(`/api/flashcards?${params.toString()}`);
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error?.message || "Failed to fetch flashcards");
+        }
+
+        const data = await response.json();
+
+        setState((prev) => ({
+          ...prev,
+          flashcards: data.data,
+          pagination: data.pagination,
+          filters: currentFilters,
+          isLoading: false,
+        }));
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "An error occurred";
+        setState((prev) => ({ ...prev, isLoading: false, error: message }));
+        toast.error(message);
       }
-
-      const response = await fetch(`/api/flashcards?${params.toString()}`);
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error?.message || "Failed to fetch flashcards");
-      }
-
-      const data = await response.json();
-
-      setState((prev) => ({
-        ...prev,
-        flashcards: data.data,
-        pagination: data.pagination,
-        filters: currentFilters,
-        isLoading: false,
-      }));
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "An error occurred";
-      setState((prev) => ({ ...prev, isLoading: false, error: message }));
-      toast.error(message);
-    }
-  }, [state.filters]);
+    },
+    [state.filters]
+  );
 
   /**
    * Creates a new flashcard.
@@ -113,9 +116,7 @@ export function useFlashcards() {
       setState((prev) => ({
         ...prev,
         flashcards: [newFlashcard, ...prev.flashcards],
-        pagination: prev.pagination
-          ? { ...prev.pagination, total: prev.pagination.total + 1 }
-          : null,
+        pagination: prev.pagination ? { ...prev.pagination, total: prev.pagination.total + 1 } : null,
         isCreating: false,
       }));
 
@@ -132,41 +133,38 @@ export function useFlashcards() {
   /**
    * Updates an existing flashcard.
    */
-  const updateFlashcard = useCallback(
-    async (id: string, front: string, back: string): Promise<boolean> => {
-      setState((prev) => ({ ...prev, isUpdating: id, error: null }));
+  const updateFlashcard = useCallback(async (id: string, front: string, back: string): Promise<boolean> => {
+    setState((prev) => ({ ...prev, isUpdating: id, error: null }));
 
-      try {
-        const response = await fetch(`/api/flashcards/${id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ front, back }),
-        });
+    try {
+      const response = await fetch(`/api/flashcards/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ front, back }),
+      });
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error?.message || "Failed to update flashcard");
-        }
-
-        const updatedFlashcard: FlashcardDTO = await response.json();
-
-        setState((prev) => ({
-          ...prev,
-          flashcards: prev.flashcards.map((f) => (f.id === id ? updatedFlashcard : f)),
-          isUpdating: null,
-        }));
-
-        toast.success("Fiszka zaktualizowana!");
-        return true;
-      } catch (error) {
-        const message = error instanceof Error ? error.message : "An error occurred";
-        setState((prev) => ({ ...prev, isUpdating: null, error: message }));
-        toast.error(message);
-        return false;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || "Failed to update flashcard");
       }
-    },
-    []
-  );
+
+      const updatedFlashcard: FlashcardDTO = await response.json();
+
+      setState((prev) => ({
+        ...prev,
+        flashcards: prev.flashcards.map((f) => (f.id === id ? updatedFlashcard : f)),
+        isUpdating: null,
+      }));
+
+      toast.success("Fiszka zaktualizowana!");
+      return true;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "An error occurred";
+      setState((prev) => ({ ...prev, isUpdating: null, error: message }));
+      toast.error(message);
+      return false;
+    }
+  }, []);
 
   /**
    * Deletes a flashcard.
@@ -187,9 +185,7 @@ export function useFlashcards() {
       setState((prev) => ({
         ...prev,
         flashcards: prev.flashcards.filter((f) => f.id !== id),
-        pagination: prev.pagination
-          ? { ...prev.pagination, total: prev.pagination.total - 1 }
-          : null,
+        pagination: prev.pagination ? { ...prev.pagination, total: prev.pagination.total - 1 } : null,
         isDeleting: null,
       }));
 
@@ -224,9 +220,9 @@ export function useFlashcards() {
   );
 
   // Fetch flashcards on mount
+
   useEffect(() => {
     fetchFlashcards();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {

@@ -12,12 +12,7 @@ interface SaveButtonProps {
  * Button for saving accepted flashcards to the database.
  * Shows count of accepted flashcards and loading state.
  */
-export const SaveButton: React.FC<SaveButtonProps> = ({
-  acceptedCount,
-  onSave,
-  isLoading,
-  disabled = false,
-}) => {
+export const SaveButton: React.FC<SaveButtonProps> = ({ acceptedCount, onSave, isLoading, disabled = false }) => {
   const isDisabled = disabled || acceptedCount === 0 || isLoading;
 
   const handleClick = async () => {

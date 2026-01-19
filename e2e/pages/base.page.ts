@@ -42,7 +42,7 @@ export class BasePage {
    * Uses Sonner toast library selector.
    */
   getToast(): Locator {
-    return this.page.locator('[data-sonner-toast]');
+    return this.page.locator("[data-sonner-toast]");
   }
 
   /**
@@ -82,10 +82,7 @@ export class BasePage {
   /**
    * Get an element by its accessible role and name.
    */
-  getByRole(
-    role: Parameters<Page["getByRole"]>[0],
-    options?: Parameters<Page["getByRole"]>[1]
-  ): Locator {
+  getByRole(role: Parameters<Page["getByRole"]>[0], options?: Parameters<Page["getByRole"]>[1]): Locator {
     return this.page.getByRole(role, options);
   }
 

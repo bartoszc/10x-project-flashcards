@@ -104,12 +104,7 @@ export const PUT: APIRoute = async ({ locals, request, params }) => {
 
   // 4. Update flashcard via service
   try {
-    const flashcard: FlashcardDTO = await updateFlashcard(
-      locals.supabase,
-      user.id,
-      flashcardId,
-      bodyParseResult.data
-    );
+    const flashcard: FlashcardDTO = await updateFlashcard(locals.supabase, user.id, flashcardId, bodyParseResult.data);
 
     return new Response(JSON.stringify(flashcard), {
       status: 200,

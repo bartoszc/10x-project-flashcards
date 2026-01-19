@@ -112,9 +112,7 @@ export const POST: APIRoute = async ({ locals, params, request }) => {
       const errorResponse: ErrorResponseDTO = {
         error: {
           code: error.code,
-          message: error.code === "NOT_FOUND" 
-            ? "Session or flashcard not found" 
-            : "An unexpected error occurred",
+          message: error.code === "NOT_FOUND" ? "Session or flashcard not found" : "An unexpected error occurred",
         },
       };
       return new Response(JSON.stringify(errorResponse), {

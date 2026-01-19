@@ -8,6 +8,7 @@ const PUBLIC_PATHS = [
   "/register",
   "/auth/reset-password",
   "/auth/new-password",
+  "/auth/callback", // PKCE callback for password reset
   "/", // Landing page
   // Auth API endpoints
   "/api/auth/login",
@@ -28,6 +29,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   });
 
   // Make supabase available in locals
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   locals.supabase = supabase as any;
 
   // Check auth session

@@ -29,9 +29,7 @@ const StartSessionScreen: React.FC<{
   <div className="text-center py-12">
     <div className="text-6xl mb-4">📚</div>
     <h2 className="text-2xl font-bold mb-2">Sesja nauki</h2>
-    <p className="text-muted-foreground mb-6">
-      Rozpocznij sesję nauki z wykorzystaniem algorytmu spaced repetition.
-    </p>
+    <p className="text-muted-foreground mb-6">Rozpocznij sesję nauki z wykorzystaniem algorytmu spaced repetition.</p>
     <Button onClick={onStart} disabled={isStarting} size="lg">
       {isStarting ? "Ładowanie..." : "Rozpocznij naukę"}
     </Button>
@@ -87,10 +85,7 @@ const ProgressBar: React.FC<{ reviewed: number; total: number }> = ({ reviewed, 
         </span>
       </div>
       <div className="w-full bg-muted rounded-full h-2">
-        <div
-          className="bg-primary h-2 rounded-full transition-all duration-300"
-          style={{ width: `${progress}%` }}
-        />
+        <div className="bg-primary h-2 rounded-full transition-all duration-300" style={{ width: `${progress}%` }} />
       </div>
     </div>
   );
@@ -215,9 +210,7 @@ export const LearningView: React.FC = () => {
           />
 
           {/* Rating buttons - only show when flipped */}
-          {isFlipped && (
-            <RatingButtons onRate={handleRate} isDisabled={state.isSubmitting} />
-          )}
+          {isFlipped && <RatingButtons onRate={handleRate} isDisabled={state.isSubmitting} />}
         </main>
       )}
     </div>

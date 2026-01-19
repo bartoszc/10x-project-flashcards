@@ -39,17 +39,41 @@ export function NewPasswordForm() {
       },
     });
 
-  // Extract token from URL hash on mount
+  // Check session status on mount
   React.useEffect(() => {
-    const hashParams = new URLSearchParams(window.location.hash.substring(1));
-    const token = hashParams.get("access_token");
-    const type = hashParams.get("type");
+    const initializeSession = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
 
-    if (type === "recovery" && token) {
-      setAccessToken(token);
-    } else {
+      // Check for error from callback
+      const errorParam = urlParams.get("error");
+      if (errorParam) {
+        setApiError(decodeURIComponent(errorParam));
+        return;
+      }
+
+      // Check for success from callback (session was set server-side)
+      const successParam = urlParams.get("success");
+      if (successParam === "true") {
+        // Session is set via cookies by callback, mark as ready
+        setAccessToken("session-via-cookies");
+        return;
+      }
+
+      // Check for hash fragment (legacy implicit flow)
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const hashToken = hashParams.get("access_token");
+      const hashType = hashParams.get("type");
+
+      if (hashType === "recovery" && hashToken) {
+        setAccessToken(hashToken);
+        return;
+      }
+
+      // No valid authentication found
       setApiError("Brak tokenu resetującego lub token jest nieprawidłowy. Spróbuj zresetować hasło ponownie.");
-    }
+    };
+
+    initializeSession();
   }, []);
 
   const handleSubmit = createSubmitHandler(async (data) => {
@@ -67,12 +91,18 @@ export function NewPasswordForm() {
         confirmPassword: data.confirmPassword,
       };
 
+      // Build headers - use Bearer token only for legacy implicit flow
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
+
+      if (accessToken !== "session-via-cookies") {
+        headers.Authorization = `Bearer ${accessToken}`;
+      }
+
       const response = await fetch("/api/auth/update-password", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
+        headers,
         body: JSON.stringify(payload),
       });
 

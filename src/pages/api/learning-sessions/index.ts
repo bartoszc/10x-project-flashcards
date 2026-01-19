@@ -55,11 +55,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
 
   // 3. Start session via service
   try {
-    const result: CreateLearningSessionResponseDTO = await startSession(
-      locals.supabase,
-      user.id,
-      limit
-    );
+    const result: CreateLearningSessionResponseDTO = await startSession(locals.supabase, user.id, limit);
 
     return new Response(JSON.stringify(result), {
       status: 201,
@@ -72,9 +68,7 @@ export const POST: APIRoute = async ({ locals, request }) => {
       const errorResponse: ErrorResponseDTO = {
         error: {
           code: error.code === "NO_FLASHCARDS" ? "NOT_FOUND" : error.code,
-          message: error.code === "NO_FLASHCARDS" 
-            ? "No flashcards due for review" 
-            : "An unexpected error occurred",
+          message: error.code === "NO_FLASHCARDS" ? "No flashcards due for review" : "An unexpected error occurred",
         },
       };
       return new Response(JSON.stringify(errorResponse), {

@@ -3,7 +3,7 @@ import { useGenerateFlashcards } from "../hooks/useGenerateFlashcards";
 import { GenerationForm } from "./GenerationForm";
 import { SuggestionsList } from "./SuggestionsList";
 import { SaveButton } from "./SaveButton";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 
 /**
  * Main container component for the AI flashcard generation view.
@@ -46,11 +46,8 @@ export const GenerateView: React.FC = () => {
       setLastSavedCount(state.generatedCount);
     }
   }, [state.generatedCount, state.isSaving, state.suggestions.length, lastSavedCount]);
-
   return (
     <div className="container max-w-4xl mx-auto py-8 px-4">
-      <Toaster richColors position="top-right" />
-
       {/* Header */}
       <header className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Generowanie fiszek AI</h1>

@@ -21,9 +21,7 @@ test.describe("Authentication", () => {
     });
 
     // Skip this test until valid test user is configured in Supabase
-    test.skip("TC-AUTH-002: should login with valid credentials and redirect to generate page", async ({
-      page,
-    }) => {
+    test.skip("TC-AUTH-002: should login with valid credentials and redirect to generate page", async ({ page }) => {
       const loginPage = new LoginPage(page);
 
       // Navigate to login page

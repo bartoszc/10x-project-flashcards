@@ -11,7 +11,7 @@ export const prerender = false;
  * DEV MODE: Set to true to skip authentication (for testing only!)
  * TODO: Remove before production deployment
  */
-const DEV_SKIP_AUTH = true;
+const DEV_SKIP_AUTH = false;
 const DEV_USER_ID = "a6d50d3f-2e5e-4d1a-9c02-186799b18741";
 
 /**

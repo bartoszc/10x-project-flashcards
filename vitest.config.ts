@@ -24,15 +24,7 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "json", "html"],
       reportsDirectory: "./coverage",
-      exclude: [
-        "node_modules/",
-        "dist/",
-        ".astro/",
-        "e2e/",
-        "*.config.*",
-        "src/test/",
-        "**/*.d.ts",
-      ],
+      exclude: ["node_modules/", "dist/", ".astro/", "e2e/", "*.config.*", "src/test/", "**/*.d.ts"],
       // Coverage thresholds (uncomment when ready)
       // thresholds: {
       //   lines: 80,

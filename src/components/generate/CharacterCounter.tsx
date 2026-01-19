@@ -11,12 +11,9 @@ interface CharacterCounterProps {
  * Character counter component with color-coded validation feedback.
  * Displays current count and provides visual cues for text length validity.
  */
+/* eslint-disable react/prop-types */
 export const CharacterCounter: React.FC<CharacterCounterProps> = React.memo(
-  ({
-    currentCount,
-    minLength = MIN_SOURCE_TEXT_LENGTH,
-    maxLength = MAX_SOURCE_TEXT_LENGTH,
-  }) => {
+  ({ currentCount, minLength = MIN_SOURCE_TEXT_LENGTH, maxLength = MAX_SOURCE_TEXT_LENGTH }) => {
     const getStatusColor = (): string => {
       if (currentCount < minLength) {
         return "text-muted-foreground";

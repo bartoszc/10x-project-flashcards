@@ -14,12 +14,7 @@ interface FlashcardCardProps {
 /**
  * Single flashcard card with inline editing capability.
  */
-export const FlashcardCard: React.FC<FlashcardCardProps> = ({
-  flashcard,
-  onEdit,
-  onDelete,
-  isUpdating,
-}) => {
+export const FlashcardCard: React.FC<FlashcardCardProps> = ({ flashcard, onEdit, onDelete, isUpdating }) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [editFront, setEditFront] = React.useState(flashcard.front);
   const [editBack, setEditBack] = React.useState(flashcard.back);
@@ -49,8 +44,11 @@ export const FlashcardCard: React.FC<FlashcardCardProps> = ({
         {isEditing ? (
           <div className="space-y-3">
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Przód</label>
+              <label htmlFor={`edit-front-${flashcard.id}`} className="text-sm font-medium text-muted-foreground">
+                Przód
+              </label>
               <Textarea
+                id={`edit-front-${flashcard.id}`}
                 value={editFront}
                 onChange={(e) => setEditFront(e.target.value)}
                 className="mt-1"
@@ -58,8 +56,11 @@ export const FlashcardCard: React.FC<FlashcardCardProps> = ({
               />
             </div>
             <div>
-              <label className="text-sm font-medium text-muted-foreground">Tył</label>
+              <label htmlFor={`edit-back-${flashcard.id}`} className="text-sm font-medium text-muted-foreground">
+                Tył
+              </label>
               <Textarea
+                id={`edit-back-${flashcard.id}`}
                 value={editBack}
                 onChange={(e) => setEditBack(e.target.value)}
                 className="mt-1"

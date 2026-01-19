@@ -18,11 +18,7 @@ import type { ErrorResponseDTO } from "@/types";
 /**
  * Validates a single field on blur.
  */
-function validateField(
-  name: keyof RegisterFormData,
-  value: string,
-  formData: RegisterFormData
-): string | undefined {
+function validateField(name: keyof RegisterFormData, value: string, formData: RegisterFormData): string | undefined {
   if (name === "email") return validateEmail(value);
   if (name === "password") return validatePassword(value);
   if (name === "confirmPassword") return validateConfirmPassword(formData.password, value);

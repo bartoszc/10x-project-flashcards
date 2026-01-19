@@ -26,6 +26,7 @@ export class AuthError extends Error {
 /**
  * Service handling authentication operations using Supabase Auth.
  */
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class AuthService {
   /**
    * Registers a new user account.
@@ -55,6 +56,13 @@ export class AuthService {
 
     if (!authData.user) {
       throw new AuthError("Registration completed but no user returned", "INTERNAL_ERROR", 500);
+    }
+
+    // Check for fake user - Supabase returns user with empty identities array
+    // when email already exists (to prevent email enumeration)
+    const identities = authData.user.identities ?? [];
+    if (identities.length === 0) {
+      throw new AuthError("Email already registered", "CONFLICT", 409);
     }
 
     return AuthService.mapToAuthResponse(authData.user, authData.session);
@@ -182,7 +190,7 @@ export class AuthService {
    */
   static async resetPassword(supabase: SupabaseClient<Database>, email: string): Promise<{ message: string }> {
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${import.meta.env.SITE_URL || "http://localhost:4321"}/auth/new-password`,
+      redirectTo: `${import.meta.env.SITE_URL || "http://localhost:3000"}/auth/callback`,
     });
 
     if (error) {

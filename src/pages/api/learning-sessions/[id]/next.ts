@@ -53,11 +53,7 @@ export const GET: APIRoute = async ({ locals, params }) => {
 
   // 3. Get next flashcard via service
   try {
-    const result: NextFlashcardResponseDTO = await getNextFlashcard(
-      locals.supabase,
-      user.id,
-      idParseResult.data
-    );
+    const result: NextFlashcardResponseDTO = await getNextFlashcard(locals.supabase, user.id, idParseResult.data);
 
     return new Response(JSON.stringify(result), {
       status: 200,
