@@ -38,6 +38,7 @@ export const GenerationForm: React.FC<GenerationFormProps> = ({
           Tekst źródłowy
         </label>
         <TextareaWithCounter
+          id="source-text"
           value={sourceText}
           onChange={onSourceTextChange}
           disabled={isLoading || disabled}

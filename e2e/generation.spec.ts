@@ -1,17 +1,11 @@
-import { test, expect } from "@playwright/test";
+import { test } from "./fixtures";
+import { expect } from "@playwright/test";
 import { GeneratePage } from "./pages";
 
 /**
  * AI Flashcard Generation E2E Tests.
  *
- * IMPORTANT: These tests require a valid authenticated user.
- * The current test user credentials don't work with Supabase,
- * so these tests are skipped until valid credentials are configured.
- *
- * To enable these tests:
- * 1. Create a test user in Supabase
- * 2. Update E2E_USERNAME and E2E_PASSWORD in .env.test
- * 3. Remove the .skip from the describe block
+ * These tests require a valid authenticated user configured in .env.test.
  *
  * Tests cover:
  * - TC-GEN-002: Text validation (too short)
@@ -23,10 +17,9 @@ import { GeneratePage } from "./pages";
 // Generation tests require authenticated user configured in .env.test
 test.describe("Flashcard Generation", () => {
   test.describe("Text Validation", () => {
-    test("TC-GEN-002: should disable generate button when text is too short", async ({ page }) => {
-      const generatePage = new GeneratePage(page);
+    test("TC-GEN-002: should disable generate button when text is too short", async ({ authenticatedPage }) => {
+      const generatePage = new GeneratePage(authenticatedPage);
 
-      // This test assumes user is already logged in
       await generatePage.navigate();
       await generatePage.expectFormVisible();
 
@@ -38,8 +31,8 @@ test.describe("Flashcard Generation", () => {
       await generatePage.expectGenerateDisabled();
     });
 
-    test("TC-GEN-003: should disable generate button when text is too long", async ({ page }) => {
-      const generatePage = new GeneratePage(page);
+    test("TC-GEN-003: should disable generate button when text is too long", async ({ authenticatedPage }) => {
+      const generatePage = new GeneratePage(authenticatedPage);
 
       await generatePage.navigate();
       await generatePage.expectFormVisible();
@@ -52,8 +45,8 @@ test.describe("Flashcard Generation", () => {
       await generatePage.expectGenerateDisabled();
     });
 
-    test("should enable generate button when text length is valid", async ({ page }) => {
-      const generatePage = new GeneratePage(page);
+    test("should enable generate button when text length is valid", async ({ authenticatedPage }) => {
+      const generatePage = new GeneratePage(authenticatedPage);
 
       await generatePage.navigate();
       await generatePage.expectFormVisible();
@@ -66,8 +59,8 @@ test.describe("Flashcard Generation", () => {
       await generatePage.expectGenerateEnabled();
     });
 
-    test("should update character counter as user types", async ({ page }) => {
-      const generatePage = new GeneratePage(page);
+    test("should update character counter as user types", async ({ authenticatedPage }) => {
+      const generatePage = new GeneratePage(authenticatedPage);
 
       await generatePage.navigate();
 
@@ -79,8 +72,8 @@ test.describe("Flashcard Generation", () => {
       await generatePage.expectCharacterCount(text.length);
     });
 
-    test("should clear text when textarea is cleared", async ({ page }) => {
-      const generatePage = new GeneratePage(page);
+    test("should clear text when textarea is cleared", async ({ authenticatedPage }) => {
+      const generatePage = new GeneratePage(authenticatedPage);
 
       await generatePage.navigate();
 
@@ -99,8 +92,8 @@ test.describe("Flashcard Generation", () => {
   });
 
   test.describe("Form State", () => {
-    test("should show generate page with form elements", async ({ page }) => {
-      const generatePage = new GeneratePage(page);
+    test("should show generate page with form elements", async ({ authenticatedPage }) => {
+      const generatePage = new GeneratePage(authenticatedPage);
 
       await generatePage.navigate();
 

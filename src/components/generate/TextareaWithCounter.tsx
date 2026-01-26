@@ -10,6 +10,7 @@ interface TextareaWithCounterProps {
   maxLength?: number;
   placeholder?: string;
   disabled?: boolean;
+  id?: string;
 }
 
 /**
@@ -23,6 +24,7 @@ export const TextareaWithCounter: React.FC<TextareaWithCounterProps> = ({
   maxLength = MAX_SOURCE_TEXT_LENGTH,
   placeholder = "Wklej tekst źródłowy, z którego chcesz wygenerować fiszki...",
   disabled = false,
+  id,
 }) => {
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.value);
@@ -33,6 +35,7 @@ export const TextareaWithCounter: React.FC<TextareaWithCounterProps> = ({
   return (
     <div className="space-y-2">
       <Textarea
+        id={id}
         value={value}
         onChange={handleChange}
         placeholder={placeholder}

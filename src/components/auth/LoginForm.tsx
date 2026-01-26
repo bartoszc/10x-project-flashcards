@@ -68,7 +68,7 @@ export function LoginForm() {
   });
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-6">
+    <form onSubmit={handleSubmit} method="post" noValidate className="space-y-6">
       <FormField label="Email" error={errors.email}>
         <Input
           name="email"
